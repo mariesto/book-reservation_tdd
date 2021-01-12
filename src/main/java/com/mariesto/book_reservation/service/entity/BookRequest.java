@@ -2,7 +2,9 @@ package com.mariesto.book_reservation.service.entity;
 
 import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class BookRequest {
 
     private String ISBN;

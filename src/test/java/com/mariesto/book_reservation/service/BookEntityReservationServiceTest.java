@@ -115,9 +115,13 @@ public class BookEntityReservationServiceTest {
     void givenId_whenGetBook_shouldReturnBook() throws InvalidRequestException {
         when(gateway.findBookById(anyString())).thenReturn(getBookResponse());
 
-        BookResponse book = useCase.findBookById("ISBN-1234");
+        BookResponse book = useCase.findBookById("ISBN-123");
 
-        assertEquals(book, getBookResponse());
+        assertEquals("ISBN-123", book.getISBN());
+        assertEquals("Learn TDD", book.getTitle());
+        assertEquals("Amendo", book.getAuthor());
+        assertEquals("12-01-2020", book.getPublishedDate());
+        assertEquals("Available", book.getStatus());
 
         verify(gateway, times(1)).findBookById(anyString());
     }
@@ -158,6 +162,7 @@ public class BookEntityReservationServiceTest {
         request.setTitle("Learn TDD");
         request.setAuthor("Amendo");
         request.setPublishedDate("12-01-2020");
+        request.setStatus("Available");
 
         return request;
     }
