@@ -1,7 +1,7 @@
 package com.mariesto.book_reservation.service;
 
 import com.mariesto.book_reservation.common.InvalidRequestException;
-import com.mariesto.book_reservation.persistence.entity_table.BookEntity;
+import com.mariesto.book_reservation.common.NotFoundException;
 import com.mariesto.book_reservation.persistence.gateway.BookGateway;
 import com.mariesto.book_reservation.service.entity.BookRequest;
 import com.mariesto.book_reservation.service.entity.BookResponse;
@@ -36,14 +36,7 @@ public class BookService implements Book {
 
         validateRequest(request);
 
-        BookEntity entity = new BookEntity();
-        entity.setISBN(request.getISBN());
-        entity.setTitle(request.getTitle());
-        entity.setAuthor(request.getAuthor());
-        entity.setPublishedDate(request.getPublishedDate());
-        entity.setStatus(request.getStatus());
-
-        gateway.save(entity);
+        gateway.save(request);
     }
 
     private void validateRequest(BookRequest request) throws InvalidRequestException {
@@ -66,10 +59,14 @@ public class BookService implements Book {
         if (request.getPublishedDate() == null) {
             throw new InvalidRequestException("Published Date can't be null!");
         }
+
+        if (request.getStatus() == null) {
+            throw new InvalidRequestException("Status can't be null!");
+        }
     }
 
     @Override
-    public BookResponse findBookById(String bookId) throws InvalidRequestException {
+    public BookResponse findBookById(String bookId) throws InvalidRequestException, NotFoundException {
         validateRequestId(bookId);
 
         return gateway.findBookById(bookId);
@@ -83,10 +80,17 @@ public class BookService implements Book {
     }
 
     @Override
-    public void borrowBook(String bookId) throws InvalidRequestException {
+    public void borrowBook(String bookId, String status) throws InvalidRequestException {
         validateRequestId(bookId);
+        validateStatus(status);
 
-        gateway.update(bookId);
+        gateway.update(bookId, status);
+    }
+
+    private void validateStatus(String status) throws InvalidRequestException {
+        if (status == null) {
+            throw new InvalidRequestException("Status can't be null!");
+        }
     }
 
     private void validateRequestId(String bookId) throws InvalidRequestException {

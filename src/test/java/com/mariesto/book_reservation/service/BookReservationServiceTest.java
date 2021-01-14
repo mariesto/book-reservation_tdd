@@ -1,6 +1,7 @@
 package com.mariesto.book_reservation.service;
 
 import com.mariesto.book_reservation.common.InvalidRequestException;
+import com.mariesto.book_reservation.common.NotFoundException;
 import com.mariesto.book_reservation.persistence.gateway.BookGateway;
 import com.mariesto.book_reservation.service.entity.BookRequest;
 import com.mariesto.book_reservation.service.entity.BookResponse;
@@ -15,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class BookEntityReservationServiceTest {
+public class BookReservationServiceTest {
 
     private Book useCase;
 
@@ -92,6 +93,17 @@ public class BookEntityReservationServiceTest {
     }
 
     @Test
+    void givenNullStatus_whenSaveBook_shouldThrowException() {
+        request.setISBN("ISBN-1234");
+        request.setTitle("Learn TDD");
+        request.setAuthor("Amendo");
+        request.setPublishedDate("12-01-2021");
+        request.setStatus(null);
+
+        assertThrows(InvalidRequestException.class, () -> useCase.saveBook(request));
+    }
+
+    @Test
     void givenValidRequest_whenSaveBook_shouldDoCorrectFunction() throws InvalidRequestException {
         useCase.saveBook(getBookRequest());
 
@@ -104,7 +116,7 @@ public class BookEntityReservationServiceTest {
     }
 
     @Test
-    void givenIdButNoData_whenGetBook_shouldThrowException() throws InvalidRequestException {
+    void givenIdButNoData_whenGetBook_shouldThrowException() throws InvalidRequestException, NotFoundException {
         when(gateway.findBookById(anyString())).thenReturn(null);
 
         BookResponse book = useCase.findBookById("ISBN-1234");
@@ -112,8 +124,8 @@ public class BookEntityReservationServiceTest {
     }
 
     @Test
-    void givenId_whenGetBook_shouldReturnBook() throws InvalidRequestException {
-        when(gateway.findBookById(anyString())).thenReturn(getBookResponse());
+    void givenId_whenGetBook_shouldReturnBook() throws InvalidRequestException, NotFoundException {
+        when(gateway.findBookById(anyString())).thenReturn(getAvailableBookResponse());
 
         BookResponse book = useCase.findBookById("ISBN-123");
 
@@ -140,20 +152,29 @@ public class BookEntityReservationServiceTest {
 
     @Test
     void givenNullId_whenBorrowBook_shouldThrowException() {
-        assertThrows(InvalidRequestException.class, () -> useCase.borrowBook(null));
+        assertThrows(InvalidRequestException.class, () -> useCase.borrowBook(null, null));
     }
 
     @Test
-    void givenId_whenBorrowBook_shouldDoCorrectFunction() throws InvalidRequestException {
-        when(gateway.findBookById(anyString())).thenReturn(getBookResponse());
+    void givenIdAndNullStatusRequest_whenBorrowBook_shouldThrowException() {
+        assertThrows(InvalidRequestException.class, () -> useCase.borrowBook("ISBN-1234", null));
+    }
 
-        useCase.borrowBook("ISBN-123");
+    @Test
+    void givenId_whenBorrowBook_shouldDoCorrectFunction() throws InvalidRequestException, NotFoundException {
+        when(gateway.findBookById(anyString())).thenReturn(getBookedBookResponse());
 
-        verify(gateway, times(1)).update(anyString());
+        useCase.borrowBook("ISBN-123", "Booked");
+
+        verify(gateway, times(1)).update(anyString(), anyString());
 
         BookResponse book = useCase.findBookById("ISBN-123");
         assertNotNull(book);
-        assertEquals("Available", book.getStatus());
+        assertEquals("ISBN-123", book.getISBN());
+        assertEquals("Learn TDD", book.getTitle());
+        assertEquals("Amendo", book.getAuthor());
+        assertEquals("12-01-2020", book.getPublishedDate());
+        assertEquals("Booked", book.getStatus());
     }
 
     private BookRequest getBookRequest(){
@@ -167,13 +188,24 @@ public class BookEntityReservationServiceTest {
         return request;
     }
 
-    private BookResponse getBookResponse(){
+    private BookResponse getAvailableBookResponse(){
         BookResponse response = new BookResponse();
         response.setISBN("ISBN-123");
         response.setTitle("Learn TDD");
         response.setAuthor("Amendo");
         response.setPublishedDate("12-01-2020");
         response.setStatus("Available");
+
+        return response;
+    }
+
+    private BookResponse getBookedBookResponse(){
+        BookResponse response = new BookResponse();
+        response.setISBN("ISBN-123");
+        response.setTitle("Learn TDD");
+        response.setAuthor("Amendo");
+        response.setPublishedDate("12-01-2020");
+        response.setStatus("Booked");
 
         return response;
     }
