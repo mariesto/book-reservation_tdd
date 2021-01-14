@@ -5,6 +5,7 @@ Here I'm trying to practice TDD with simple use case, book reservation.
 
 Build with :
 -  Springboot
+-  JUnit
 -  Mockito
--  Jacoco
+-  JaCoCo
 
