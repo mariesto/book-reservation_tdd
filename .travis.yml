@@ -2,4 +2,4 @@ language: java
 
 after_success:
   - ./mvnw clean install
-  - bash <(curl -s https://codecov.io/bash) -t
+  - bash <(curl -s https://codecov.io/bash)
