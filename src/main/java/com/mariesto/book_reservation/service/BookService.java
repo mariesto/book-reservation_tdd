@@ -3,11 +3,12 @@ package com.mariesto.book_reservation.service;
 import com.mariesto.book_reservation.common.InvalidRequestException;
 import com.mariesto.book_reservation.common.NotFoundException;
 import com.mariesto.book_reservation.persistence.gateway.BookGateway;
+import com.mariesto.book_reservation.service.entity.BookListResponse;
 import com.mariesto.book_reservation.service.entity.BookRequest;
 import com.mariesto.book_reservation.service.entity.BookResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -20,15 +21,19 @@ public class BookService implements Book {
     }
 
     @Override
-    public List<BookResponse> listBook() {
-
+    public BookListResponse listBook() {
+        BookListResponse response = new BookListResponse();
         List<BookResponse> books = gateway.findAll();
 
         if (books == null) {
-            return Collections.emptyList();
+            response.setStatusCode(HttpStatus.OK.value());
+            return response;
         }
 
-        return books;
+        response.setStatusCode(HttpStatus.OK.value());
+        response.setBooks(books);
+
+        return response;
     }
 
     @Override
