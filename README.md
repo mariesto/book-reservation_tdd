@@ -9,4 +9,7 @@ Build with :
 -  JUnit
 -  Mockito
 -  JaCoCo
+-  Codecov
+
+
 

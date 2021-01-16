@@ -113,7 +113,7 @@ class BookJPAGatewayTest {
         verify(repository, times(1)).updateBookEntity(anyString(), anyString());
     }
 
-    private List<BookEntity> entityList = Arrays.asList(new BookEntity(), new BookEntity());
+    private final List<BookEntity> entityList = Arrays.asList(new BookEntity(), new BookEntity());
 
     private BookEntity getBookEntity() {
         BookEntity entity = new BookEntity();

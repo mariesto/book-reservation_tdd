@@ -32,10 +32,10 @@ public class BookReservationServiceTest {
         request = new BookRequest();
     }
 
-    private List<BookResponse> predefinedListBook = Arrays.asList(new BookResponse(), new BookResponse());
+    private final List<BookResponse> predefinedListBook = Arrays.asList(new BookResponse(), new BookResponse());
 
     @Test
-    void whenFindAllBookButNoDataFound_shouldReturnEmptyCollection() {
+    void givenARequest_whenFindAllBookButNoDataFound_shouldReturnEmptyCollection() {
         when(gateway.findAll()).thenReturn(null);
 
         List<BookResponse> listBook = useCase.listBook();
@@ -44,7 +44,7 @@ public class BookReservationServiceTest {
     }
 
     @Test
-    void whenGetAllBook_shouldReturnBooks() {
+    void givenARequest_whenGetAllBook_shouldReturnBooks() {
         when(gateway.findAll()).thenReturn(predefinedListBook);
 
         List<BookResponse> listBook = useCase.listBook();
