@@ -12,6 +12,7 @@ import java.util.List;
 public class BookListResponse {
 
     private int statusCode;
+    private String statusMessage;
     private List<BookResponse> books;
 
 }

@@ -27,10 +27,12 @@ public class BookService implements Book {
 
         if (books == null) {
             response.setStatusCode(HttpStatus.OK.value());
+            response.setStatusMessage(HttpStatus.OK.getReasonPhrase());
             return response;
         }
 
         response.setStatusCode(HttpStatus.OK.value());
+        response.setStatusMessage(HttpStatus.OK.getReasonPhrase());
         response.setBooks(books);
 
         return response;

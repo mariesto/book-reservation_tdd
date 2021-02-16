@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -52,6 +53,7 @@ class BookControllerIT {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode", equalTo(200)))
+                .andExpect(jsonPath("$.statusMessage", equalTo(HttpStatus.OK.getReasonPhrase())))
                 .andExpect(jsonPath("$.books", hasSize(0)))
                 .andReturn();
 
@@ -66,6 +68,7 @@ class BookControllerIT {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode", equalTo(200)))
+                .andExpect(jsonPath("$.statusMessage", equalTo(HttpStatus.OK.getReasonPhrase())))
                 .andExpect(jsonPath("$.books", hasSize(1)))
                 .andReturn();
 
