@@ -3,7 +3,6 @@ package com.mariesto.book_reservation.service;
 import com.mariesto.book_reservation.common.InvalidRequestException;
 import com.mariesto.book_reservation.common.NotFoundException;
 import com.mariesto.book_reservation.persistence.gateway.BookGateway;
-import com.mariesto.book_reservation.service.entity.BookListResponse;
 import com.mariesto.book_reservation.service.entity.BookRequest;
 import com.mariesto.book_reservation.service.entity.BookResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class BookReservationServiceTest {
+class BookReservationServiceTest {
 
     private Book useCase;
 
@@ -40,18 +39,18 @@ public class BookReservationServiceTest {
     void givenARequest_whenFindAllBookButNoDataFound_shouldReturnEmptyCollection() {
         when(gateway.findAll()).thenReturn(new ArrayList<>());
 
-        BookListResponse response = useCase.listBook();
+        List<BookResponse> response = useCase.listBook();
 
-        assertTrue(response.getBooks().isEmpty());
+        assertTrue(response.isEmpty());
     }
 
     @Test
     void givenARequest_whenGetAllBook_shouldReturnBooks() {
         when(gateway.findAll()).thenReturn(predefinedListBook);
 
-        BookListResponse response = useCase.listBook();
+        List<BookResponse> response = useCase.listBook();
 
-        assertEquals(2, response.getBooks().size());
+        assertEquals(2, response.size());
         verify(gateway, times(1)).findAll();
     }
 
