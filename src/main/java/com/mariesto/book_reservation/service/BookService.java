@@ -40,7 +40,6 @@ public class BookService implements Book {
 
     @Override
     public void saveBook(BookRequest request) throws InvalidRequestException {
-
         validateRequest(request);
 
         gateway.save(request);

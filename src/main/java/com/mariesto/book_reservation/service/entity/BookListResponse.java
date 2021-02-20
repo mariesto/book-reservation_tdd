@@ -9,10 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BookListResponse {
+public class BookListResponse extends ServiceResponse{
 
-    private int statusCode;
-    private String statusMessage;
     private List<BookResponse> books;
 
 }

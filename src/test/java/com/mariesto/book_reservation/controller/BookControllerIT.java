@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mariesto.book_reservation.persistence.entity_table.BookEntity;
 import com.mariesto.book_reservation.persistence.repository.BookRepository;
 import com.mariesto.book_reservation.service.entity.BookListResponse;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,11 +12,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,8 +30,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class BookControllerIT {
 
-    @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private BookController bookController;
 
     @Autowired
     private BookRepository repository;
@@ -37,6 +42,9 @@ class BookControllerIT {
 
     @BeforeEach
     void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(bookController)
+                .build();
+
         entity = new BookEntity();
     }
 
@@ -79,6 +87,52 @@ class BookControllerIT {
 
         assertEquals(200, result.getResponse().getStatus());
         assertEquals(1, response.getBooks().size());
+    }
+
+    @Test
+    void givenNullRequest_whenSaveBook_shouldReturnBadRequest() throws Exception {
+        mockMvc.perform(post("/books/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.BAD_REQUEST.value())));
+    }
+
+    @Test
+    void givenInvalidRequest_whenSaveBook_shouldReturnBadRequest() throws Exception {
+        mockMvc.perform(post("/books/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\n" +
+                        "  \"ISBN\": \"ISBN-1234\",\n" +
+                        "  \"title\": \"Learn TDD\",\n" +
+                        "  \"author\": \"\",\n" +
+                        "  \"publishedDate\": \"20 Feb 2020\",\n" +
+                        "  \"status\": \"Available\"\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.BAD_REQUEST.value())));
+    }
+
+    @Test
+    void givenARequest_whenSaveBook_shouldReturnCorrectResponse() throws Exception {
+        mockMvc.perform(post("/books/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\n" +
+                        "  \"isbn\": \"ISBN-1234\",\n" +
+                        "  \"title\": \"Learn TDD\",\n" +
+                        "  \"author\": \"Amendo\",\n" +
+                        "  \"publishedDate\": \"20 Feb 2020\",\n" +
+                        "  \"status\": \"Available\"\n" +
+                        "}"))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.CREATED.value())));
+
+        Optional<BookEntity> bookEntity = repository.findById("ISBN-1234");
+
+        assertTrue(bookEntity.isPresent());
     }
 
     private void preparedData() {
