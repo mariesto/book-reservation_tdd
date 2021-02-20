@@ -25,18 +25,13 @@ public class BookController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Object> createBook(@RequestBody BookRequest request) {
+    public ResponseEntity<Object> createBook(@RequestBody BookRequest request) throws InvalidRequestException {
         ServiceResponse response = new ServiceResponse();
 
-        try {
-            book.saveBook(request);
+        book.saveBook(request);
 
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setStatusMessage(HttpStatus.CREATED.getReasonPhrase());
-        }catch (InvalidRequestException e){
-            response.setStatusCode(HttpStatus.BAD_REQUEST.value());
-            response.setStatusMessage(e.getMessage());
-        }
+        response.setStatusCode(HttpStatus.CREATED.value());
+        response.setStatusMessage(HttpStatus.CREATED.getReasonPhrase());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }

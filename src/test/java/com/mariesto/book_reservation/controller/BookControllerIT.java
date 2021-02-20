@@ -43,6 +43,7 @@ class BookControllerIT {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(bookController)
+                .setControllerAdvice(ExceptionController.class)
                 .build();
 
         entity = new BookEntity();
