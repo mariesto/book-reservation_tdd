@@ -1,6 +1,7 @@
 package com.mariesto.book_reservation.controller;
 
 import com.mariesto.book_reservation.common.InvalidRequestException;
+import com.mariesto.book_reservation.common.NotFoundException;
 import com.mariesto.book_reservation.service.Book;
 import com.mariesto.book_reservation.service.entity.BookListResponse;
 import com.mariesto.book_reservation.service.entity.BookRequest;
@@ -42,6 +43,16 @@ public class BookController {
 
         response.setStatusCode(HttpStatus.CREATED.value());
         response.setStatusMessage(HttpStatus.CREATED.getReasonPhrase());
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
+    }
+
+    @GetMapping(path = "/{isbn}")
+    public ResponseEntity<Object> findBookById(@PathVariable String isbn) throws InvalidRequestException, NotFoundException {
+        BookResponse response = book.findBookById(isbn);
+
+        response.setStatusCode(HttpStatus.OK.value());
+        response.setStatusMessage(HttpStatus.OK.getReasonPhrase());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }

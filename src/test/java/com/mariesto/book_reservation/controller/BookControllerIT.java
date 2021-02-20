@@ -137,6 +137,31 @@ class BookControllerIT {
         assertTrue(bookEntity.isPresent());
     }
 
+    @Test
+    void givenAnId_whenFindBookByIdButNotFoundData_shouldReturnNotFoundMessage() throws Exception {
+        preparedData();
+
+        String isbn = "ISBN-1234";
+
+        mockMvc.perform(get("/books/{isbn}", isbn))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.NOT_FOUND.value())));
+    }
+
+    @Test
+    void givenAnId_whenFindBookById_shouldReturnCorrectData() throws Exception {
+        preparedData();
+
+        String isbn = "ISBN-123";
+
+        mockMvc.perform(get("/books/{isbn}", isbn))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.OK.value())))
+                .andExpect(jsonPath("$.isbn", equalTo(isbn)));
+    }
+
     private void preparedData() {
         entity.setISBN("ISBN-123");
         entity.setTitle("Learn TDD");

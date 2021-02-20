@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BookResponse {
+public class BookResponse extends ServiceResponse {
 
     private String ISBN;
     private String title;

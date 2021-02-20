@@ -1,6 +1,7 @@
 package com.mariesto.book_reservation.controller;
 
 import com.mariesto.book_reservation.common.InvalidRequestException;
+import com.mariesto.book_reservation.common.NotFoundException;
 import com.mariesto.book_reservation.service.entity.ServiceResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,4 +20,12 @@ public class ExceptionController {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(value = NotFoundException.class)
+    public ResponseEntity<Object> handleNotFoundException(NotFoundException ex){
+        ServiceResponse response = new ServiceResponse();
+        response.setStatusCode(HttpStatus.NOT_FOUND.value());
+        response.setStatusMessage(ex.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 }

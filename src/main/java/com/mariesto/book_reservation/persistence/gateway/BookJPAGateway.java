@@ -69,7 +69,7 @@ public class BookJPAGateway implements BookGateway {
 
         return repository.findById(bookId)
                 .map(this::constructBookResponse)
-                .orElseThrow(() -> new NotFoundException("Data Not Found!"));
+                .orElseThrow(() -> new NotFoundException("Data Not Found with id : " + bookId));
     }
 
     private BookResponse constructBookResponse(BookEntity entity) {
