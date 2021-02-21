@@ -56,4 +56,16 @@ public class BookController {
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }
+
+    @DeleteMapping("/{isbn}")
+    public ResponseEntity<Object> deleteBook(@PathVariable String isbn) throws InvalidRequestException {
+        ServiceResponse response = new ServiceResponse();
+
+        book.deleteBook(isbn);
+
+        response.setStatusCode(HttpStatus.NO_CONTENT.value());
+        response.setStatusMessage(HttpStatus.NO_CONTENT.getReasonPhrase());
+
+        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+    }
 }

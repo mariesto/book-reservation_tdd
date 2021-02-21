@@ -18,10 +18,8 @@ import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -160,6 +158,21 @@ class BookControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.OK.value())))
                 .andExpect(jsonPath("$.isbn", equalTo(isbn)));
+    }
+
+    @Test
+    void givenAnId_whenDeleteBook_shouldDeleteCorrectData() throws Exception {
+        preparedData();
+
+        String isbn = "ISBN-123";
+
+        mockMvc.perform(delete("/books/{isbn}", isbn))
+                .andDo(print())
+                .andExpect(status().isNoContent())
+                .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.NO_CONTENT.value())));
+
+        Optional<BookEntity> bookEntity = repository.findById(isbn);
+        assertFalse(bookEntity.isPresent());
     }
 
     private void preparedData() {
