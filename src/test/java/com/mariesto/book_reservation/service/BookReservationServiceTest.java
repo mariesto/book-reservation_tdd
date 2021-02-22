@@ -145,8 +145,10 @@ class BookReservationServiceTest {
     }
 
     @Test
-    void givenId_whenDeleteBook_shouldDoCorrectFunction() throws InvalidRequestException {
-        useCase.deleteBook("ISBN-1234");
+    void givenId_whenDeleteBook_shouldDoCorrectFunction() throws InvalidRequestException, NotFoundException {
+        when(gateway.findBookById(anyString())).thenReturn(getAvailableBookResponse());
+
+        useCase.deleteBook("ISBN-123");
 
         verify(gateway, times(1)).deleteBook(anyString());
     }

@@ -58,8 +58,10 @@ public class BookController {
     }
 
     @DeleteMapping("/{isbn}")
-    public ResponseEntity<Object> deleteBook(@PathVariable String isbn) throws InvalidRequestException {
+    public ResponseEntity<Object> deleteBook(@PathVariable String isbn) throws InvalidRequestException, NotFoundException {
         ServiceResponse response = new ServiceResponse();
+
+        book.findBookById(isbn);
 
         book.deleteBook(isbn);
 

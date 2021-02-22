@@ -16,8 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Optional;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -136,10 +135,10 @@ class BookControllerIT {
     }
 
     @Test
-    void givenAnId_whenFindBookByIdButNotFoundData_shouldReturnNotFoundMessage() throws Exception {
+    void givenId_whenFindBookByIdButNotFoundData_shouldReturnNotFoundMessage() throws Exception {
         preparedData();
 
-        String isbn = "ISBN-1234";
+        String isbn = "ISBN-0000";
 
         mockMvc.perform(get("/books/{isbn}", isbn))
                 .andDo(print())
@@ -148,7 +147,7 @@ class BookControllerIT {
     }
 
     @Test
-    void givenAnId_whenFindBookById_shouldReturnCorrectData() throws Exception {
+    void givenId_whenFindBookById_shouldReturnCorrectData() throws Exception {
         preparedData();
 
         String isbn = "ISBN-123";
@@ -161,7 +160,7 @@ class BookControllerIT {
     }
 
     @Test
-    void givenAnId_whenDeleteBook_shouldDeleteCorrectData() throws Exception {
+    void givenId_whenDeleteBook_shouldDeleteCorrectData() throws Exception {
         preparedData();
 
         String isbn = "ISBN-123";
@@ -173,6 +172,18 @@ class BookControllerIT {
 
         Optional<BookEntity> bookEntity = repository.findById(isbn);
         assertFalse(bookEntity.isPresent());
+    }
+
+    @Test
+    void givenId_whenDeleteBookButBookNotFound_shouldReturnNotFound() throws Exception {
+        preparedData();
+
+        String isbn = "ISBN-12345";
+
+        mockMvc.perform(delete("/books/{isbn}", isbn))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.NOT_FOUND.value())));
     }
 
     private void preparedData() {
