@@ -172,6 +172,7 @@ class BookReservationServiceTest {
         verify(gateway, times(1)).update(anyString(), anyString());
 
         BookResponse book = useCase.findBookById("ISBN-123");
+
         assertNotNull(book);
         assertEquals("ISBN-123", book.getISBN());
         assertEquals("Learn TDD", book.getTitle());

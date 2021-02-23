@@ -1,6 +1,5 @@
 package com.mariesto.book_reservation.persistence.gateway;
 
-import com.mariesto.book_reservation.common.InvalidRequestException;
 import com.mariesto.book_reservation.common.NotFoundException;
 import com.mariesto.book_reservation.service.entity.BookRequest;
 import com.mariesto.book_reservation.service.entity.BookResponse;
@@ -9,14 +8,14 @@ import java.util.List;
 
 public interface BookGateway {
 
+    void save(BookRequest request);
+
     List<BookResponse> findAll();
 
-    void save(BookRequest request) throws InvalidRequestException;
+    BookResponse findBookById(String bookId) throws NotFoundException;
 
-    BookResponse findBookById(String bookId) throws InvalidRequestException, NotFoundException;
+    void update(String bookId, String status);
 
-    void deleteBook(String bookId) throws InvalidRequestException;
-
-    void update(String bookId, String status) throws InvalidRequestException;
+    void deleteBook(String bookId);
 
 }

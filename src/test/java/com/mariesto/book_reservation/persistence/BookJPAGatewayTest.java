@@ -36,11 +36,6 @@ class BookJPAGatewayTest {
     }
 
     @Test
-    void givenNullRequest_whenSaveBook_shouldThrowException() {
-        assertThrows(InvalidRequestException.class, () -> jpaGateway.save(null));
-    }
-
-    @Test
     void givenValidData_whenSaveBook_shouldDoCorrectFunctionOnce() throws InvalidRequestException {
         BookEntity entity = getBookEntity();
 
@@ -64,17 +59,7 @@ class BookJPAGatewayTest {
     }
 
     @Test
-    void givenNullId_whenFindById_shouldThrowException() {
-        assertThrows(InvalidRequestException.class, () -> jpaGateway.findBookById(null));
-    }
-
-    @Test
-    void givenIdButDataNotFound_whenFindById_shouldThrowException() {
-        assertThrows(NotFoundException.class, () -> jpaGateway.findBookById("ISBN-1234"));
-    }
-
-    @Test
-    void givenId_whenFindById_shouldReturnCorrectData() throws InvalidRequestException, NotFoundException {
+    void givenId_whenFindById_shouldReturnCorrectData() throws NotFoundException {
         when(repository.findById(anyString())).thenReturn(Optional.of(getBookEntity()));
 
         BookResponse book = jpaGateway.findBookById("ISBN-1234");
@@ -90,24 +75,14 @@ class BookJPAGatewayTest {
     }
 
     @Test
-    void givenNullId_whenDeleteBook_shouldThrowException() {
-        assertThrows(InvalidRequestException.class, () -> jpaGateway.deleteBook(null));
-    }
-
-    @Test
-    void givenId_whenDeleteBook_shouldDoCorrectFunction() throws InvalidRequestException {
+    void givenId_whenDeleteBook_shouldDoCorrectFunction() {
         jpaGateway.deleteBook("ISBN-1234");
 
         verify(repository, times(1)).deleteById(anyString());
     }
 
     @Test
-    void givenNullIdAndStatus_whenUpdateBook_shouldThrowException() {
-        assertThrows(InvalidRequestException.class, () -> jpaGateway.update(null, null));
-    }
-
-    @Test
-    void givenValidRequest_whenUpdateBook_shouldDoUpdateOnce() throws InvalidRequestException {
+    void givenValidRequest_whenUpdateBook_shouldDoUpdateOnce() {
         jpaGateway.update("ISBN-1234", "Booked");
 
         verify(repository, times(1)).updateBookEntity(anyString(), anyString());
