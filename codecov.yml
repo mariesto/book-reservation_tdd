@@ -1,0 +1,8 @@
+ignore:
+  - "src/main/java/com/mariesto/book_reservation/controller"
+
+coverage:
+  status:
+    default_rules:
+      flag_coverage_not_uploaded_behavior: exclude
+
