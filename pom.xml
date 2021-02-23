@@ -77,6 +77,13 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<excludes>
+						<exclude>test</exclude>
+						<exclude>com.mariesto.book_reservation.controller.*</exclude>
+						<exclude>com.mariesto.book_reservation.common.*</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
