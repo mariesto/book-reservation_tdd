@@ -70,4 +70,18 @@ public class BookController {
 
         return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
     }
+
+    @PatchMapping("/{isbn}/{status}")
+    public ResponseEntity<Object> borrowBook(@PathVariable String isbn, @PathVariable String status) throws InvalidRequestException, NotFoundException {
+        ServiceResponse response = new ServiceResponse();
+
+        book.findBookById(isbn);
+
+        book.borrowBook(isbn, status);
+
+        response.setStatusCode(HttpStatus.NO_CONTENT.value());
+        response.setStatusMessage(HttpStatus.NO_CONTENT.getReasonPhrase());
+
+        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+    }
 }

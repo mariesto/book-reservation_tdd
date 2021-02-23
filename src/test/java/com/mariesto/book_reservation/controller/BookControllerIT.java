@@ -186,6 +186,37 @@ class BookControllerIT {
                 .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.NOT_FOUND.value())));
     }
 
+    @Test
+    void givenARequest_whenBorrowBookButBookNotFound_shouldReturnNotFound() throws Exception {
+        preparedData();
+
+        String isbn = "ISBN-1234";
+        String status = "Available";
+
+        mockMvc.perform(patch("/books/{isbn}/{status}", isbn, status))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.NOT_FOUND.value())));
+    }
+
+    @Test
+    void givenARequest_whenBorrowBook_shouldChangeBookStatus() throws Exception {
+        preparedData();
+
+        String isbn = "ISBN-123";
+        String status = "Available";
+
+        mockMvc.perform(patch("/books/{isbn}/{status}", isbn, status))
+                .andDo(print())
+                .andExpect(status().isNoContent())
+                .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.NO_CONTENT.value())));
+
+        Optional<BookEntity> entity = repository.findById(isbn);
+
+        assertTrue(entity.isPresent());
+        assertEquals(status, entity.get().getStatus());
+    }
+
     private void preparedData() {
         entity.setISBN("ISBN-123");
         entity.setTitle("Learn TDD");
