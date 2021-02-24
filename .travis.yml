@@ -1,7 +1,21 @@
 language: java
+dist: trusty
 
-script:
-  - mvn clean package
+services:
+  - docker
+
+jobs:
+  include:
+    - stage: build_java_package
+      script:
+        - mvn clean package
+
+    - stage: build_docker
+      script:
+        - docker build -t book-reservation-spring-boot
+        - docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+        - docker tag book-reservation-spring-boot mariesto/book-reservation-spring-boot
+        - docker push mariesto/book-reservation-spring-boot
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
