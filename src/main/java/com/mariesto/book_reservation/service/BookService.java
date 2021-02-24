@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class BookService implements Book {
 
-    private BookGateway gateway;
+    private final BookGateway gateway;
 
     public BookService(BookGateway gateway) {
         this.gateway = gateway;

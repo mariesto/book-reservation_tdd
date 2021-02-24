@@ -27,6 +27,11 @@ public class BookController {
     public ResponseEntity<Object> listBook(){
         List<BookResponse> listBook = book.listBook();
 
+        listBook.forEach(bookResponse -> {
+            bookResponse.setStatusCode(HttpStatus.OK.value());
+            bookResponse.setStatusMessage(HttpStatus.OK.getReasonPhrase());
+        });
+
         BookListResponse response = new BookListResponse();
         response.setBooks(listBook);
         response.setStatusCode(HttpStatus.OK.value());
