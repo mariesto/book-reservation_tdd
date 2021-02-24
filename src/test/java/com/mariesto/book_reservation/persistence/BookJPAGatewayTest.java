@@ -2,7 +2,7 @@ package com.mariesto.book_reservation.persistence;
 
 import com.mariesto.book_reservation.common.InvalidRequestException;
 import com.mariesto.book_reservation.common.NotFoundException;
-import com.mariesto.book_reservation.persistence.entity_table.BookEntity;
+import com.mariesto.book_reservation.persistence.entity_table.Book;
 import com.mariesto.book_reservation.persistence.gateway.BookJPAGateway;
 import com.mariesto.book_reservation.persistence.repository.BookRepository;
 import com.mariesto.book_reservation.service.entity.BookRequest;
@@ -37,7 +37,7 @@ class BookJPAGatewayTest {
 
     @Test
     void givenValidData_whenSaveBook_shouldDoCorrectFunctionOnce() throws InvalidRequestException {
-        BookEntity entity = getBookEntity();
+        Book entity = getBookEntity();
 
         when(repository.save(any())).thenReturn(entity);
 
@@ -88,10 +88,10 @@ class BookJPAGatewayTest {
         verify(repository, times(1)).updateBookEntity(anyString(), anyString());
     }
 
-    private final List<BookEntity> entityList = Arrays.asList(new BookEntity(), new BookEntity());
+    private final List<Book> entityList = Arrays.asList(new Book(), new Book());
 
-    private BookEntity getBookEntity() {
-        BookEntity entity = new BookEntity();
+    private Book getBookEntity() {
+        Book entity = new Book();
         entity.setISBN("ISBN-1234");
         entity.setTitle("Learn TDD");
         entity.setAuthor("Amendo");

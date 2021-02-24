@@ -12,7 +12,7 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BookEntity {
+public class Book {
 
     @Id
     private String ISBN;

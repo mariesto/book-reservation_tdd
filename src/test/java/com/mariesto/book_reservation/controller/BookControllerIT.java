@@ -1,7 +1,7 @@
 package com.mariesto.book_reservation.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mariesto.book_reservation.persistence.entity_table.BookEntity;
+import com.mariesto.book_reservation.persistence.entity_table.Book;
 import com.mariesto.book_reservation.persistence.repository.BookRepository;
 import com.mariesto.book_reservation.service.entity.BookListResponse;
 import org.junit.jupiter.api.*;
@@ -36,7 +36,7 @@ class BookControllerIT {
     @Autowired
     private BookRepository repository;
 
-    private BookEntity entity;
+    private Book entity;
 
     @BeforeEach
     void setUp() {
@@ -44,7 +44,7 @@ class BookControllerIT {
                 .setControllerAdvice(ExceptionController.class)
                 .build();
 
-        entity = new BookEntity();
+        entity = new Book();
     }
 
     @AfterEach
@@ -129,7 +129,7 @@ class BookControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.CREATED.value())));
 
-        Optional<BookEntity> bookEntity = repository.findById("ISBN-1234");
+        Optional<Book> bookEntity = repository.findById("ISBN-1234");
 
         assertTrue(bookEntity.isPresent());
     }
@@ -170,7 +170,7 @@ class BookControllerIT {
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.NO_CONTENT.value())));
 
-        Optional<BookEntity> bookEntity = repository.findById(isbn);
+        Optional<Book> bookEntity = repository.findById(isbn);
         assertFalse(bookEntity.isPresent());
     }
 
@@ -211,7 +211,7 @@ class BookControllerIT {
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.NO_CONTENT.value())));
 
-        Optional<BookEntity> entity = repository.findById(isbn);
+        Optional<Book> entity = repository.findById(isbn);
 
         assertTrue(entity.isPresent());
         assertEquals(status, entity.get().getStatus());

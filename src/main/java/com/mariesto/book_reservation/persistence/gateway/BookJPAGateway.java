@@ -1,8 +1,7 @@
 package com.mariesto.book_reservation.persistence.gateway;
 
-import com.mariesto.book_reservation.common.InvalidRequestException;
 import com.mariesto.book_reservation.common.NotFoundException;
-import com.mariesto.book_reservation.persistence.entity_table.BookEntity;
+import com.mariesto.book_reservation.persistence.entity_table.Book;
 import com.mariesto.book_reservation.persistence.repository.BookRepository;
 import com.mariesto.book_reservation.service.entity.BookRequest;
 import com.mariesto.book_reservation.service.entity.BookResponse;
@@ -20,14 +19,14 @@ public class BookJPAGateway implements BookGateway {
 
     @Override
     public List<BookResponse> findAll() {
-        List<BookEntity> bookEntities = repository.findAll();
+        List<Book> bookEntities = repository.findAll();
 
         return constructBookResponses(bookEntities);
     }
 
     @Override
     public void save(BookRequest request) {
-        BookEntity entity = getBookEntity(request);
+        Book entity = getBookEntity(request);
 
         repository.save(entity);
     }
@@ -49,8 +48,8 @@ public class BookJPAGateway implements BookGateway {
         repository.updateBookEntity(bookId, status);
     }
 
-    private BookEntity getBookEntity(BookRequest request) {
-        BookEntity entity = new BookEntity();
+    private Book getBookEntity(BookRequest request) {
+        Book entity = new Book();
         entity.setISBN(request.getISBN());
         entity.setTitle(request.getTitle());
         entity.setAuthor(request.getAuthor());
@@ -59,7 +58,7 @@ public class BookJPAGateway implements BookGateway {
         return entity;
     }
 
-    private BookResponse constructBookResponse(BookEntity entity) {
+    private BookResponse constructBookResponse(Book entity) {
         BookResponse response = new BookResponse();
         response.setISBN(entity.getISBN());
         response.setTitle(entity.getTitle());
@@ -70,10 +69,10 @@ public class BookJPAGateway implements BookGateway {
         return response;
     }
 
-    private List<BookResponse> constructBookResponses(List<BookEntity> bookEntity) {
+    private List<BookResponse> constructBookResponses(List<Book> book) {
         List<BookResponse> bookResponses = new ArrayList<>();
 
-        for (BookEntity entity : bookEntity) {
+        for (Book entity : book) {
             BookResponse bookResponse = new BookResponse();
             bookResponse.setISBN(entity.getISBN());
             bookResponse.setTitle(entity.getTitle());
