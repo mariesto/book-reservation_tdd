@@ -11,5 +11,5 @@ Build with :
 -  JaCoCo
 -  Codecov
 
-
+Postman collection : https://www.getpostman.com/collections/a06ed145d18d805adbdd
 
