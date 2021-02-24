@@ -12,7 +12,7 @@ jobs:
 
     - stage: build_docker
       script:
-        - docker build -t book-reservation-spring-boot
+        - docker build -f Dockerfile -t book-reservation-spring-boot .
         - docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
         - docker tag book-reservation-spring-boot mariesto/book-reservation-spring-boot
         - docker push mariesto/book-reservation-spring-boot
