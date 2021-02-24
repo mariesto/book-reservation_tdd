@@ -13,9 +13,9 @@ jobs:
     - stage: build_docker
       script:
         - docker build -f Dockerfile -t book-reservation-spring-boot:latest .
-        - echo "$DOCKER_HUB_ACCESS_TOKEN" | docker login -u "$DOCKER_HUB_USERNAME" --password--stdin
-        - docker tag book-reservation-spring-boot mariesto/book-reservation-spring-boot
-        - docker push mariesto/book-reservation-spring-boot
+        - echo "$DOCKER_HUB_ACCESS_TOKEN" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
+        - docker tag book-reservation-spring-boot "$DOCKER_HUB_USERNAME"/book-reservation-spring-boot
+        - docker push "$DOCKER_HUB_USERNAME"/book-reservation-spring-boot
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
