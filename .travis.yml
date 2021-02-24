@@ -12,8 +12,8 @@ jobs:
 
     - stage: build_docker
       script:
-        - docker build -f Dockerfile -t book-reservation-spring-boot .
-        - docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+        - docker build -f Dockerfile -t book-reservation-spring-boot:latest .
+        - echo "$DOCKER_HUB_ACCESS_TOKEN" | docker login -u "$DOCKER_HUB_USERNAME" --password--stdin
         - docker tag book-reservation-spring-boot mariesto/book-reservation-spring-boot
         - docker push mariesto/book-reservation-spring-boot
 
