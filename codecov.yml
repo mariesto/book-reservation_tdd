@@ -2,6 +2,8 @@ ignore:
   - "src/main/java/com/mariesto/book_reservation/controller"
   - "src/main/java/com/mariesto/book_reservation/common"
   - "src/main/java/com/mariesto/book_reservation/BookReservationApplication"
+  - "src/main/java/com/mariesto/book_reservation/service/entity/BookListResponse"
+  - "src/main/java/com/mariesto/book_reservation/service/entity/ServiceResponse"
 
 coverage:
   status:
