@@ -56,7 +56,7 @@ class BookControllerIT {
 
     @Test
     void givenARequest_whenGetAllBookButEmptyReturn_shouldReturnEmptyCollection() throws Exception {
-        MvcResult result = mockMvc.perform(get("/books/").contentType(MediaType.APPLICATION_JSON))
+        MvcResult result = mockMvc.perform(get("/api/v1/books/").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode", equalTo(200)))
@@ -71,7 +71,7 @@ class BookControllerIT {
     void givenARequest_whenGetAllBook_shouldReturnCorrectResponse() throws Exception {
         preparedData();
 
-        MvcResult result = mockMvc.perform(get("/books/").contentType(MediaType.APPLICATION_JSON))
+        MvcResult result = mockMvc.perform(get("/api/v1/books/").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode", equalTo(200)))
@@ -90,7 +90,7 @@ class BookControllerIT {
 
     @Test
     void givenNullRequest_whenSaveBook_shouldReturnBadRequest() throws Exception {
-        mockMvc.perform(post("/books/")
+        mockMvc.perform(post("/api/v1/books/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"))
                 .andDo(print())
@@ -100,13 +100,13 @@ class BookControllerIT {
 
     @Test
     void givenInvalidRequest_whenSaveBook_shouldReturnBadRequest() throws Exception {
-        mockMvc.perform(post("/books/")
+        mockMvc.perform(post("/api/v1/books/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\n" +
                         "  \"ISBN\": \"ISBN-1234\",\n" +
                         "  \"title\": \"Learn TDD\",\n" +
                         "  \"author\": \"\",\n" +
-                        "  \"publishedDate\": \"20 Feb 2020\",\n" +
+                        "  \"publishedDate\": \"20-02-2020\",\n" +
                         "  \"status\": \"Available\"\n" +
                         "}"))
                 .andDo(print())
@@ -116,13 +116,13 @@ class BookControllerIT {
 
     @Test
     void givenARequest_whenSaveBook_shouldReturnCorrectResponse() throws Exception {
-        mockMvc.perform(post("/books/")
+        mockMvc.perform(post("/api/v1/books/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\n" +
                         "  \"isbn\": \"ISBN-1234\",\n" +
                         "  \"title\": \"Learn TDD\",\n" +
                         "  \"author\": \"Amendo\",\n" +
-                        "  \"publishedDate\": \"20 Feb 2020\",\n" +
+                        "  \"publishedDate\": \"20-02-2020\",\n" +
                         "  \"status\": \"Available\"\n" +
                         "}"))
                 .andDo(print())
@@ -140,7 +140,7 @@ class BookControllerIT {
 
         String isbn = "ISBN-0000";
 
-        mockMvc.perform(get("/books/{isbn}", isbn))
+        mockMvc.perform(get("/api/v1/books/{isbn}", isbn))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.NOT_FOUND.value())));
@@ -152,7 +152,7 @@ class BookControllerIT {
 
         String isbn = "ISBN-123";
 
-        mockMvc.perform(get("/books/{isbn}", isbn))
+        mockMvc.perform(get("/api/v1/books/{isbn}", isbn))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.OK.value())))
@@ -165,7 +165,7 @@ class BookControllerIT {
 
         String isbn = "ISBN-123";
 
-        mockMvc.perform(delete("/books/{isbn}", isbn))
+        mockMvc.perform(delete("/api/v1/books/{isbn}", isbn))
                 .andDo(print())
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.NO_CONTENT.value())));
@@ -180,7 +180,7 @@ class BookControllerIT {
 
         String isbn = "ISBN-12345";
 
-        mockMvc.perform(delete("/books/{isbn}", isbn))
+        mockMvc.perform(delete("/api/v1/books/{isbn}", isbn))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.NOT_FOUND.value())));
@@ -193,7 +193,7 @@ class BookControllerIT {
         String isbn = "ISBN-1234";
         String status = "Available";
 
-        mockMvc.perform(patch("/books/{isbn}/{status}", isbn, status))
+        mockMvc.perform(patch("/api/v1/books/{isbn}/{status}", isbn, status))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.NOT_FOUND.value())));
@@ -206,7 +206,7 @@ class BookControllerIT {
         String isbn = "ISBN-123";
         String status = "Available";
 
-        mockMvc.perform(patch("/books/{isbn}/{status}", isbn, status))
+        mockMvc.perform(patch("/api/v1/books/{isbn}/{status}", isbn, status))
                 .andDo(print())
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$.statusCode", equalTo(HttpStatus.NO_CONTENT.value())));
