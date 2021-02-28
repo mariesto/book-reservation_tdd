@@ -50,9 +50,10 @@ To run this project, you have 3 options :
     
    3. Save the best for the last (Play with Docker) :star_struck:
       * You don't need docker installed in your local to use this, but you need to create your Docker Hub account first.
-      * Then you can visit this page https://docs.docker.com/get-started/04_sharing_app/#run-the-image-on-a-new-instance 
+      * Then you can visit this page https://labs.play-with-docker.com/
       * In the terminal you can just run `docker run -p 8080:8080 mariesto/book-reservation-spring-boot`
       * Now you can click on the “Open Port” button and type in 8080
       * Adjust the URL with `/api/v1/books/` and there you go :boom:
+      * You can also visit this page for reference https://docs.docker.com/get-started/04_sharing_app/#run-the-image-on-a-new-instance
 
 Since we're using H2 as our in-memory database, you can launch the console by visiting http://localhost:8080/h2-console  
