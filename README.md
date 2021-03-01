@@ -40,6 +40,7 @@ To run this project, you have 3 options :
       * You can run test and build the project by running `mvn clean package` 
       * Start the app by typing `mvn spring-boot:run` from the root project directory to start the application.
       * Now you can hit `localhost:8080/api/v1/books/` either using cUrl or Postman and play with it :nerd_face:
+      * Since we're using H2 as our in-memory database, you can launch the console by visiting http://localhost:8080/h2-console
       * :soon: Will add API documentation using Swagger
     
    2. Run using docker 
@@ -54,6 +55,4 @@ To run this project, you have 3 options :
       * In the terminal you can just run `docker run -p 8080:8080 mariesto/book-reservation-spring-boot`
       * Now you can click on the “Open Port” button and type in 8080
       * Adjust the URL with `/api/v1/books/` and there you go :boom:
-      * You can also visit this page for reference https://docs.docker.com/get-started/04_sharing_app/#run-the-image-on-a-new-instance
-
-Since we're using H2 as our in-memory database, you can launch the console by visiting http://localhost:8080/h2-console  
+      * You can also visit this page for reference https://docs.docker.com/get-started/04_sharing_app/#run-the-image-on-a-new-instance  
