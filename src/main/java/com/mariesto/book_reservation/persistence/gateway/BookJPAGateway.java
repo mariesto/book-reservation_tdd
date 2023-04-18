@@ -1,7 +1,7 @@
 package com.mariesto.book_reservation.persistence.gateway;
 
 import com.mariesto.book_reservation.common.NotFoundException;
-import com.mariesto.book_reservation.persistence.entity_table.Book;
+import com.mariesto.book_reservation.persistence.entity.Book;
 import com.mariesto.book_reservation.persistence.repository.BookRepository;
 import com.mariesto.book_reservation.service.entity.BookRequest;
 import com.mariesto.book_reservation.service.entity.BookResponse;

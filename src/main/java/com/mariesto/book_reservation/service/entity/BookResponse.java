@@ -1,5 +1,6 @@
 package com.mariesto.book_reservation.service.entity;
 
+import java.io.Serializable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BookResponse extends ServiceResponse {
+public class BookResponse extends ServiceResponse implements Serializable {
 
     private String ISBN;
     private String title;

@@ -1,6 +1,6 @@
 package com.mariesto.book_reservation.persistence.repository;
 
-import com.mariesto.book_reservation.persistence.entity_table.Book;
+import com.mariesto.book_reservation.persistence.entity.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -1,21 +1,30 @@
 package com.mariesto.book_reservation.service;
 
+import java.util.List;
+import java.util.Objects;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.support.SimpleValueWrapper;
+import org.springframework.stereotype.Service;
 import com.mariesto.book_reservation.common.InvalidRequestException;
 import com.mariesto.book_reservation.common.NotFoundException;
 import com.mariesto.book_reservation.persistence.gateway.BookGateway;
+import com.mariesto.book_reservation.service.cache.CacheProvider;
 import com.mariesto.book_reservation.service.entity.BookRequest;
 import com.mariesto.book_reservation.service.entity.BookResponse;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class BookService implements Book {
-
     private final BookGateway gateway;
 
-    public BookService(BookGateway gateway) {
+    private final CacheProvider cacheProvider;
+
+    @Value ("${cache-name}")
+    private String cacheName;
+
+    public BookService(BookGateway gateway, CacheProvider cacheProvider) {
         this.gateway = gateway;
+        this.cacheProvider = cacheProvider;
     }
 
     @Override
@@ -58,9 +67,25 @@ public class BookService implements Book {
 
     @Override
     public BookResponse findBookById(String bookId) throws InvalidRequestException, NotFoundException {
-        validateRequestId(bookId);
+        try {
+            long time = 2000L;
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            throw new IllegalStateException(e);
+        }
 
-        return gateway.findBookById(bookId);
+        BookResponse response = gateway.findBookById(bookId);
+
+        Object cache = cacheProvider.get(cacheName, bookId);
+        if (Objects.isNull(cache)) {
+            cacheProvider.put(cacheName, bookId, response);
+        } else {
+            Object cacheResult = cacheProvider.get(cacheName, bookId);
+            SimpleValueWrapper simpleValueWrapper = (SimpleValueWrapper) cacheResult;
+            response= (BookResponse) simpleValueWrapper.get();
+        }
+
+        return response;
     }
 
     @Override

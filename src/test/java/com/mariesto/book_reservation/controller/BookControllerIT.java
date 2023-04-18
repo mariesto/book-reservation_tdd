@@ -1,7 +1,7 @@
 package com.mariesto.book_reservation.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mariesto.book_reservation.persistence.entity_table.Book;
+import com.mariesto.book_reservation.persistence.entity.Book;
 import com.mariesto.book_reservation.persistence.repository.BookRepository;
 import com.mariesto.book_reservation.service.entity.BookListResponse;
 import org.junit.jupiter.api.*;
@@ -56,6 +56,8 @@ class BookControllerIT {
 
     @Test
     void givenARequest_whenGetAllBookButEmptyReturn_shouldReturnEmptyCollection() throws Exception {
+        repository.deleteAll();
+
         MvcResult result = mockMvc.perform(get("/api/v1/books/").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -76,7 +78,7 @@ class BookControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode", equalTo(200)))
                 .andExpect(jsonPath("$.statusMessage", equalTo(HttpStatus.OK.getReasonPhrase())))
-                .andExpect(jsonPath("$.books", hasSize(1)))
+                .andExpect(jsonPath("$.books", hasSize(2)))
                 .andReturn();
 
         String content = result.getResponse().getContentAsString();
@@ -85,7 +87,7 @@ class BookControllerIT {
         BookListResponse response = mapper.readValue(content, BookListResponse.class);
 
         assertEquals(200, result.getResponse().getStatus());
-        assertEquals(1, response.getBooks().size());
+        assertEquals(2, response.getBooks().size());
     }
 
     @Test

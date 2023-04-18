@@ -1,4 +1,4 @@
-package com.mariesto.book_reservation.persistence.entity_table;
+package com.mariesto.book_reservation.persistence.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -9,4 +9,5 @@ CREATE TABLE book(
 );
 
 INSERT INTO book (isbn, title, author, published_date, status)
-VALUES ('ISBN-123', 'TDD with Spring Boot, JUnit, Mockito', 'Amendo', '24-02-2021', 'Available');
+VALUES ('ISBN-123', 'TDD with Spring Boot, JUnit, Mockito', 'Amendo', '24-02-2021', 'Available'),
+('ISBN-234', 'Using Cache for Spring Boot', 'Amendo', '24-02-2022', 'Available');
