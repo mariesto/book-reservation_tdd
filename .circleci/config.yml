@@ -11,7 +11,7 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            docker build -f Dockerfile -t book-reservation-spring-boot:latest .
+            docker build -f Dockerfile -t book-reservation-spring-boot:latest ../.
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
             docker tag book-reservation-spring-boot $DOCKERHUB_USERNAME/book-reservation-spring-boot:latest
             docker push $DOCKERHUB_USERNAME/book-reservation-spring-boot:latest
