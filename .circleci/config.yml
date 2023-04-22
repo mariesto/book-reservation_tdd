@@ -1,0 +1,22 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:11-jdk
+    steps:
+      - checkout
+      - run: mvn clean install
+      - run: mvn test
+      - run:
+          name: Build Docker image
+          command: |
+            docker build -t book-reservation-spring-boot:latest .
+            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+            docker tag book-reservation-spring-boot $DOCKERHUB_USERNAME/book-reservation-spring-boot:latest
+            docker push $DOCKERHUB_USERNAME/book-reservation-spring-boot:latest
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - build
