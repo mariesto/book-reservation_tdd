@@ -8,11 +8,13 @@ jobs:
       - checkout
       - run: mvn clean install
       - run: mvn test
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
-          name: Build Docker image
+          name: Build and push Docker image
           command: |
-            docker build -f Dockerfile -t book-reservation-spring-boot:latest ../.
-            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+            docker build -t book-reservation-spring-boot:latest -f Dockerfile .
+            echo "$DOCKER_HUB_ACCESS_TOKEN" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
             docker tag book-reservation-spring-boot $DOCKERHUB_USERNAME/book-reservation-spring-boot:latest
             docker push $DOCKERHUB_USERNAME/book-reservation-spring-boot:latest
 
