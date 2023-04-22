@@ -15,7 +15,7 @@ jobs:
           command: |
             docker build -t book-reservation-spring-boot:latest -f Dockerfile .
             echo "$DOCKER_HUB_ACCESS_TOKEN" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
-            docker tag book-reservation-spring-boot $DOCKERHUB_USERNAME/book-reservation-spring-boot:latest
+            docker tag book-reservation-spring-boot:latest $DOCKERHUB_USERNAME/book-reservation-spring-boot:latest
             docker push $DOCKERHUB_USERNAME/book-reservation-spring-boot:latest
 
 workflows:
