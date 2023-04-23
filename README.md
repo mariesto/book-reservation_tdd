@@ -1,11 +1,11 @@
 # Book Reservation
 [![codecov](https://codecov.io/gh/mariesto/book-reservation_tdd/branch/master/graph/badge.svg?token=JV3N4C8ZPC)](https://codecov.io/gh/mariesto/book-reservation_tdd)
-[![Build Status](https://travis-ci.com/mariesto/book-reservation_tdd.svg?branch=master)](https://travis-ci.com/mariesto/book-reservation_tdd)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/mariesto/book-reservation_tdd/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/mariesto/book-reservation_tdd/tree/master)
 
 Build simple Rest API using Spring Boot by implementing TDD. 
 Using Maven as dependency management, Mockito an JUnit as for testing extension and H2 as in-memory database. 
 Create test case for each layer (persistence, service, controller).
-Using Codecov for coverage, TravisCI for CI/CD and Docker for containerisation.
+Using Codecov for coverage, ~~TravisCI~~ CircleCI for CI/CD and Docker for containerisation.
 
 ![image](src/main/resources/img/BookReservation.png)
 
